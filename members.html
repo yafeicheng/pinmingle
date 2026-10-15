@@ -159,9 +159,9 @@ footer{
   <section>
     <div class="sec-head"><span class="sec-no">其二</span><h3>茶友相簿</h3></div>
     <div class="card gate" id="gate">
-      <p>這一頁的照片只給茶友看，請輸入茶友鑰匙。</p>
+      <p>這一頁的照片只給茶友看，請輸入茶友鑰匙（這次茶會的日期，四個數字）。</p>
       <form id="gate-form">
-        <input type="password" id="pass" autocomplete="off" aria-label="茶友鑰匙">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" id="pass" autocomplete="off" aria-label="茶友鑰匙">
         <p class="err" id="err">鑰匙不對，請再試一次。</p>
         <div class="btn-row">
           <button class="btn" type="submit">打開相簿</button>
@@ -180,10 +180,8 @@ footer{
     for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
     return arr;
   }
-  form.addEventListener('submit', function(ev){
-    ev.preventDefault();
+  function tryUnlock(pass){
     err.style.display = 'none';
-    var pass = document.getElementById('pass').value;
     fetch('gallery.enc.json')
       .then(function(r){ return r.json(); })
       .then(function(enc){
@@ -216,7 +214,13 @@ footer{
       .catch(function(){
         err.style.display = 'block';
       });
+  }
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    tryUnlock(document.getElementById('pass').value.trim());
   });
+  var m = /[#&]k=([0-9]{4})/.exec(location.hash || '');
+  if (m) tryUnlock(m[1]);
 })();
 </script>
 
