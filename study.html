@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>品茗樂 · 茶藝學習</title>
+<title>品茗樂 · 義工區</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&display=swap" rel="stylesheet">
@@ -112,7 +112,7 @@ section{margin-top:30px}
   width:100%;height:900px;border:1px solid var(--line);border-radius:10px;
   background:#fff;margin-top:18px;display:block;
 }
-.gate input[type=password]{
+.gate input{
   width:100%;padding:13px 16px;border:1px solid var(--line);border-radius:8px;
   font-size:17px;font-family:inherit;color:var(--ink);background:#fff;margin-top:14px;
 }
@@ -150,19 +150,72 @@ footer{
       <a href="index.html">首頁</a>
       <a href="knowledge.html">茶知識</a>
       <a href="photos.html">照片</a>
-      <a href="study.html" class="on">茶藝學習</a>
+      <a href="study.html" class="on">義工區</a>
       <a href="prep.html">籌備</a>
       <a href="info.html">常用資訊</a>
     </nav>
   </header>
 
   <section>
-    <div class="sec-head"><span class="sec-no">其三</span><h3>茶藝學習</h3></div>
-    <div class="card">
-      <p>這裡放沏茶的要領——每種茶的水溫、注水和浸泡時間，慢慢累積。</p>
-      <p class="soft">之後這裡會放培訓材料，用義工鑰匙打開。</p>
+    <div class="sec-head"><span class="sec-no">其三</span><h3>義工區</h3></div>
+    <div class="card gate" id="gate">
+      <p>這一區是給義工的，請輸入義工鑰匙。</p>
+      <p class="soft">小提示：鑰匙是兩個字，泡茶時最先聞到的。</p>
+      <form id="gate-form">
+        <input type="text" id="pass" autocomplete="off" aria-label="義工鑰匙">
+        <p class="err" id="err">鑰匙不對，請再試一次。</p>
+        <div class="btn-row">
+          <button class="btn" type="submit">打開義工區</button>
+        </div>
+      </form>
     </div>
+    <div id="vol-content" style="display:none"></div>
   </section>
+
+<script>
+(function(){
+  var form = document.getElementById('gate-form');
+  var err = document.getElementById('err');
+  function b64ToU8(b64){
+    var bin = atob(b64), arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return arr;
+  }
+  function tryUnlock(pass){
+    err.style.display = 'none';
+    fetch('volunteers.enc.json')
+      .then(function(r){ return r.json(); })
+      .then(function(enc){
+        var encKey = new TextEncoder().encode(pass);
+        return crypto.subtle.importKey('raw', encKey, 'PBKDF2', false, ['deriveKey'])
+          .then(function(base){
+            return crypto.subtle.deriveKey(
+              { name:'PBKDF2', salt: b64ToU8(enc.salt), iterations: 100000, hash: 'SHA-256' },
+              base, { name:'AES-GCM', length: 256 }, false, ['decrypt']);
+          })
+          .then(function(key){
+            return crypto.subtle.decrypt({ name:'AES-GCM', iv: b64ToU8(enc.iv) }, key, b64ToU8(enc.data));
+          });
+      })
+      .then(function(buf){
+        var data = JSON.parse(new TextDecoder().decode(buf));
+        var c = document.getElementById('vol-content');
+        c.innerHTML = data.html;
+        document.getElementById('gate').style.display = 'none';
+        c.style.display = 'block';
+      })
+      .catch(function(){
+        err.style.display = 'block';
+      });
+  }
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    tryUnlock(document.getElementById('pass').value.trim());
+  });
+  var m = /[#&]k=([^&]+)/.exec(location.hash || '');
+  if (m) { try { tryUnlock(decodeURIComponent(m[1])); } catch(e){} }
+})();
+</script>
 
   <footer>品茗樂 · 每月一會</footer>
 </div>
