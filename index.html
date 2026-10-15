@@ -31,8 +31,6 @@ body{
   -webkit-text-size-adjust:100%;
 }
 .wrap{max-width:760px;margin:0 auto;padding:0 20px 64px}
-
-/* Header */
 header{padding:34px 0 8px;text-align:left}
 .brand{display:flex;align-items:center;gap:14px}
 .brand-mark{
@@ -42,11 +40,11 @@ header{padding:34px 0 8px;text-align:left}
 }
 .brand h1{font-size:32px;font-weight:900;letter-spacing:.14em;line-height:1.2}
 .brand-sub{font-size:12px;letter-spacing:.34em;color:var(--ink-soft);margin-top:2px;font-family:Georgia,serif}
-
-/* Music-free quiet top rule */
 .rule{height:1px;background:var(--line);margin:22px 0 0}
-
-/* Hero */
+.nav{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:14px}
+.nav a{color:var(--ink-soft);text-decoration:none;font-size:16px;padding:2px 0}
+.nav a:hover{color:var(--accent-deep)}
+.nav a.on{color:var(--accent);font-weight:700;border-bottom:2px solid var(--accent)}
 .hero{
   background:var(--card);border:1px solid var(--line);border-radius:10px;
   padding:38px 32px 32px;margin-top:26px;
@@ -58,8 +56,7 @@ header{padding:34px 0 8px;text-align:left}
   border:1px solid var(--tag-line);border-radius:8px;
   padding:10px 18px;font-weight:700;color:var(--accent);font-size:16px;
 }
-
-/* Sections */
+.hero-img{width:100%;border-radius:10px;border:1px solid var(--line);display:block;margin-top:22px}
 section{margin-top:30px}
 .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
 .sec-no{color:var(--accent);font-weight:700;font-size:15px;letter-spacing:.1em}
@@ -73,8 +70,23 @@ section{margin-top:30px}
 .card p{color:var(--ink)}
 .card p.soft, .note{color:var(--ink-soft);font-size:15.5px}
 .card p + p{margin-top:10px}
-
-/* Prep */
+.nav-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.nav-card{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:20px 22px;text-decoration:none;color:var(--ink);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:19px;font-weight:700;
+}
+.nav-card:hover{border-color:var(--accent);color:var(--accent-deep)}
+.nav-card .arr{color:var(--accent);font-weight:900}
+.recipe-flex{display:flex;gap:24px;align-items:flex-start}
+.recipe-flex img{width:270px;max-width:44%;border-radius:8px;border:1px solid var(--line);flex:none}
+.recipe-flex .txt{flex:1;min-width:0}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.gallery figure{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.gallery img{width:100%;height:auto;display:block}
+.gallery figcaption{padding:10px 16px;font-size:15.5px;color:var(--ink-soft)}
+.gallery .wide{grid-column:1 / -1}
 .needs{list-style:none}
 .needs li{
   display:flex;justify-content:space-between;gap:16px;
@@ -87,8 +99,6 @@ section{margin-top:30px}
 }
 .bar i{display:block;height:100%;width:0%;background:var(--green);border-radius:99px}
 .progress-text{font-weight:700;color:var(--accent)}
-
-/* Buttons */
 .btn{
   display:inline-block;background:var(--accent);color:#fff;text-decoration:none;
   border-radius:8px;padding:13px 26px;font-weight:700;font-size:16.5px;
@@ -98,18 +108,19 @@ section{margin-top:30px}
 .btn-outline{background:#fff;color:var(--accent)}
 .btn-outline:hover{background:#faf3e6;color:var(--accent-deep)}
 .btn-row{margin-top:18px}
-
-/* Form embed */
 .form-frame{
   width:100%;height:900px;border:1px solid var(--line);border-radius:10px;
   background:#fff;margin-top:18px;display:block;
 }
-
+.gate input[type=password]{
+  width:100%;padding:13px 16px;border:1px solid var(--line);border-radius:8px;
+  font-size:17px;font-family:inherit;color:var(--ink);background:#fff;margin-top:14px;
+}
+.gate .err{color:#a33b1f;font-size:15.5px;margin-top:12px;display:none}
 footer{
   margin-top:48px;padding-top:20px;border-top:1px solid var(--line);
   text-align:center;color:var(--ink-soft);font-size:15px;letter-spacing:.12em;
 }
-
 @media (max-width:560px){
   body{font-size:16px}
   .brand h1{font-size:27px}
@@ -117,12 +128,15 @@ footer{
   .hero h2{font-size:27px}
   .card{padding:22px 20px}
   .form-frame{height:980px}
+  .nav-cards{grid-template-columns:1fr}
+  .gallery{grid-template-columns:1fr}
+  .recipe-flex{flex-direction:column}
+  .recipe-flex img{width:100%;max-width:100%}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <header>
     <div class="brand">
       <div class="brand-mark">茶</div>
@@ -132,88 +146,37 @@ footer{
       </div>
     </div>
     <div class="rule"></div>
+    <nav class="nav">
+      <a href="index.html" class="on">首頁</a>
+      <a href="knowledge.html">茶知識</a>
+      <a href="photos.html">照片</a>
+      <a href="study.html">茶藝學習</a>
+      <a href="prep.html">籌備</a>
+      <a href="info.html">常用資訊</a>
+    </nav>
   </header>
 
-  <!-- Hero -->
   <div class="hero">
     <h2>歡迎來到品茗樂。</h2>
     <p>我們每月聚一次，圍著茶席，慢慢喝茶。</p>
     <span class="tag">下一場月會 · 11月5日（四）· 三個茶席</span>
   </div>
 
-  <!-- 茶知識 -->
+  <img class="hero-img" src="img/flowers.jpg" alt="茶會上的花藝">
+
   <section>
-    <div class="sec-head"><span class="sec-no">其一</span><h3>茶知識</h3></div>
-    <div class="card">
-      <h4>《水果茶》</h4>
-      <p>靜西分享的做法——八種材料：桔橙、蘋果、鳳梨、草莓、檸檬、肉桂、百香果、茶葉；比例 桔橙 4：蘋果 4：鳳梨 3：草莓 3：檸檬 0.5；份量（約 1,000 ml）：蘋果 1 個、小鳳梨半個（大的 1/3）、桔橙 1 個、肉桂棒半支、茶葉 18 g（紅烏龍或錫蘭紅茶）；最後加上檸檬皮絲與百香果汁。</p>
-      <p>要點：不過甜——茶香、果香、微酸，彼此平衡；不過甜，才顯雅。</p>
+    <div class="nav-cards">
+      <a class="nav-card" href="knowledge.html">茶知識<span class="arr">→</span></a>
+      <a class="nav-card" href="photos.html">照片<span class="arr">→</span></a>
+      <a class="nav-card" href="study.html">茶藝學習<span class="arr">→</span></a>
+      <a class="nav-card" href="prep.html">籌備<span class="arr">→</span></a>
+      <a class="nav-card" href="info.html">常用資訊<span class="arr">→</span></a>
     </div>
-    <div class="card">
-      <h4>《花草茶講義》</h4>
-      <p>君慧在 2026 年 10 月月會的主講——洋甘菊、薰衣草薄荷、洛神花等花草茶的認識與泡法。重點先整理在這裡，詳細講義之後補上。</p>
+    <div class="btn-row">
+      <a class="btn" href="prep.html#register">前往登記</a>
     </div>
   </section>
 
-  <!-- 照片 -->
-  <section>
-    <div class="sec-head"><span class="sec-no">其二</span><h3>照片</h3></div>
-    <div class="card">
-      <p>茶席與場地的照片整理中。茶友們的照片，等大家同意之後再放上來。</p>
-    </div>
-  </section>
-
-  <!-- 茶藝學習 -->
-  <section>
-    <div class="sec-head"><span class="sec-no">其三</span><h3>茶藝學習</h3></div>
-    <div class="card">
-      <p>這裡放沏茶的要領——每種茶的水溫、注水和浸泡時間，慢慢累積。</p>
-    </div>
-  </section>
-
-  <!-- 11月5日籌備 -->
-  <section>
-    <div class="sec-head"><span class="sec-no">其四</span><h3>11月5日籌備</h3></div>
-    <div class="card">
-      <h4>這一場需要的配備（三個茶席）</h4>
-      <ul class="needs">
-        <li><span>茶具</span><span class="qty">3 套</span></li>
-        <li><span>燒水壺</span><span class="qty">6 個</span></li>
-        <li><span>壺架／放壺小椅</span><span class="qty">6 個</span></li>
-        <li><span>延長線</span><span class="qty">3 條</span></li>
-        <li><span>茶席布／茶巾</span><span class="qty">3 份</span></li>
-        <li><span>插花與花器</span><span class="qty">1 份</span></li>
-        <li><span>拍照</span><span class="qty">1 位</span></li>
-        <li><span>接待引導</span><span class="qty">2 位</span></li>
-        <li><span>茶點</span><span class="qty">1 份</span></li>
-      </ul>
-      <div class="bar"><i style="width:0%"></i></div>
-      <p class="progress-text">目前 0 樣已備齊 · 還缺 15 樣</p>
-      <p class="note" style="margin-top:10px">登記剛開始，上面這些都還缺人認領。進度由負責人依登記表更新。</p>
-    </div>
-  </section>
-
-  <!-- 登記 -->
-  <section>
-    <div class="sec-head"><span class="sec-no">其五</span><h3>登記</h3></div>
-    <div class="card">
-      <p>想來參加，或願意來幫忙，請填這張表。填完會送到負責人手裡，負責人確認後會在 LINE 群裡回覆您。</p>
-      <iframe class="form-frame" src="https://docs.google.com/forms/d/1WIxTJULnGKm2BRECzx0-wiIYNikocTjePui70XieqQw/viewform?embedded=true" title="品茗樂・茶會登記" loading="lazy">載入中…</iframe>
-      <div class="btn-row">
-        <a class="btn" href="https://docs.google.com/forms/d/1WIxTJULnGKm2BRECzx0-wiIYNikocTjePui70XieqQw/viewform" target="_blank" rel="noopener">在新頁面打開登記表</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- 常用資訊 -->
-  <section>
-    <div class="sec-head"><span class="sec-no">其六</span><h3>常用資訊</h3></div>
-    <div class="card">
-      <p>月會地點：Los Altos Community Center（實際房間以每月公告為準）。</p>
-    </div>
-  </section>
-
-  <!-- 散場之後 -->
   <section>
     <div class="sec-head"><span class="sec-no">其七</span><h3>散場之後</h3></div>
     <div class="card">
@@ -221,19 +184,7 @@ footer{
     </div>
   </section>
 
-  <!-- 負責人專區 -->
-  <section>
-    <div class="sec-head"><span class="sec-no">其八</span><h3>負責人專區</h3></div>
-    <div class="card">
-      <div class="btn-row" style="margin-top:0">
-        <a class="btn btn-outline" href="https://docs.google.com/spreadsheets/d/1tCbKABxth_Z3qtCpwYluc_ODEhr_NqWsXZMEL114tWA/edit" target="_blank" rel="noopener">負責人彙總表</a>
-      </div>
-      <p class="note" style="margin-top:12px">只有負責人能打開。</p>
-    </div>
-  </section>
-
   <footer>品茗樂 · 每月一會</footer>
-
 </div>
 </body>
 </html>
